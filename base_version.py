@@ -126,11 +126,9 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     output_seq_one = ""
     output_seq_two = ""
     while True:
-        print()
-
-
-
-
+        print("current column: " + str(current_column))
+        print("current row: " + str(current_row))
+        print("=====================================================")
         if current_row == 0 or current_column == 0:
             break
         if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column - 1][current_row - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
@@ -150,10 +148,8 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
             output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
 
         if input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column - 1][current_row - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]] and input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column - 1][current_row] + GAP_COST and input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column][current_row - 1] + GAP_COST:
-            print()
-
-
-
+            print("There is an error")
+            exit()
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
