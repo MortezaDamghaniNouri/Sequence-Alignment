@@ -1,6 +1,14 @@
 
 
 
+
+GAP_COST = 30
+ALFA_DICTIONARY = {"AA": 0, "AC": 110, "AG": 48, "AT": 94,
+                   "CA": 110, "CC": 0, "CG": 118, "CT": 48,
+                   "GA": 48, "GC": 118, "GG": 0, "GT": 110,
+                   "TA": 94, "TC": 48, "TG": 110, "TT": 0}
+
+
 # This function gets a string and a list of integers and returns the corresponding DNA sequence
 def sequence_generator(input_base_string, input_list_of_integers):
     current_string = input_base_string
@@ -61,6 +69,42 @@ def input_file_reader(input_file_name):
 
 # This function initializes the cost matrix
 def cost_matrix_initializer(first_dimension, second_dimension):
+    output_matrix = []
+    i = 0
+    first_row = []
+    while i <= first_dimension:
+        first_row.append(i * GAP_COST)
+        i += 1
+    output_matrix.append(first_row)
+    j = 1
+    while j <= second_dimension:
+        temp_list = [j * GAP_COST]
+        i = 1
+        while i <= first_dimension:
+            temp_list.append(-1)
+            i += 1
+        output_matrix.append(temp_list)
+        j += 1
+    return output_matrix
+
+
+# This function prints the input matrix
+def matrix_printer(input_matrix):
+    i = len(input_matrix) - 1
+    while i >= 0:
+        print(input_matrix[i])
+        i = i - 1
+
+
+# This function calculates the optimal cost using dynamic programming
+def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
+    pass
+
+
+
+
+
+
 
 
 
@@ -77,7 +121,7 @@ def cost_matrix_initializer(first_dimension, second_dimension):
 input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
-cost_matrix = optimal_cost_calculator(cost_matrix)
+cost_matrix = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
 aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix)
 
 
