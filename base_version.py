@@ -1,7 +1,7 @@
 
 
 
-# This function gets a string a list of integers and returns the corresponding DNA sequence
+# This function gets a string and a list of integers and returns the corresponding DNA sequence
 def sequence_generator(input_base_string, input_list_of_integers):
     current_string = input_base_string
     i = 0
@@ -59,6 +59,8 @@ def input_file_reader(input_file_name):
     return first_seq, second_seq
 
 
+# This function initializes the cost matrix
+def cost_matrix_initializer(first_dimension, second_dimension):
 
 
 
@@ -71,10 +73,12 @@ def input_file_reader(input_file_name):
 
 
 
+# main part of the code starts here
 input_file_name = "input1.txt"
-seq1, seq2 = input_file_reader(input_file_name)
-
-
+seq_one, seq_two = input_file_reader(input_file_name)
+cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
+cost_matrix = optimal_cost_calculator(cost_matrix)
+aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix)
 
 
 
