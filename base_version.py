@@ -111,19 +111,65 @@ def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
             input_cost_matrix[j][i] = min(input_cost_matrix[j - 1][i] + GAP_COST, input_cost_matrix[j][i - 1] + GAP_COST, input_cost_matrix[j - 1][i - 1] + ALFA_DICTIONARY[input_seq_one_list[i - 1] + input_seq_two_list[j - 1]])
             j += 1
         i += 1
-    return input_cost_matrix
+    return input_cost_matrix, input_seq_one_list, input_seq_two_list
+
+
+# This function reverses the input string
+def reverse_string(input_string):
+    return input_string[::-1]
+
+
+# This function gets the cost matrix and input sequences and returns the two aligned sequences
+def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list):
+    current_row = len(input_seq_two)
+    current_column = len(input_seq_one)
+    output_seq_one = ""
+    output_seq_two = ""
+    while True:
+        print()
+
+
+
+
+        if current_row == 0 or current_column == 0:
+            break
+        if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column - 1][current_row - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
+            current_column = current_column - 1
+            current_row = current_row - 1
+            output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+            output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+        if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column - 1][current_row] + GAP_COST:
+            current_column = current_column - 1
+            current_row = current_row
+            output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+            output_seq_two = output_seq_two + "_"
+        if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column][current_row - 1] + GAP_COST:
+            current_column = current_column
+            current_row = current_row - 1
+            output_seq_one = output_seq_one + "_"
+            output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+
+        if input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column - 1][current_row - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]] and input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column - 1][current_row] + GAP_COST and input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column][current_row - 1] + GAP_COST:
+            print()
+
+
+
+    return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
 # main part of the code starts here
-input_file_name = "input5.txt"
+input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
-cost_matrix = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
+cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
 print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
 print("the len of seq one: " + str(len(seq_one)))
 print("the len of seq two: " + str(len(seq_two)))
-exit()
-aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix)
+aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
+print("aligned seq one: ")
+print(aligned_seq_one)
+print("aligned seq two: ")
+print(aligned_seq_two)
 
 
 
