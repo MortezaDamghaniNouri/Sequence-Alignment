@@ -98,23 +98,20 @@ def matrix_printer(input_matrix):
 
 # This function calculates the optimal cost using dynamic programming
 def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
-    pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    input_seq_one_list = []
+    input_seq_two_list = []
+    for letter in input_seq_one:
+        input_seq_one_list.append(letter)
+    for letter in input_seq_two:
+        input_seq_two_list.append(letter)
+    i = 1
+    while i <= len(input_seq_one):
+        j = 1
+        while j <= len(input_seq_two):
+            input_cost_matrix[j][i] = min(input_cost_matrix[j - 1][i] + GAP_COST, input_cost_matrix[j][i - 1] + GAP_COST, input_cost_matrix[j - 1][i - 1] + ALFA_DICTIONARY[input_seq_one_list[i - 1] + input_seq_two_list[j - 1]])
+            j += 1
+        i += 1
+    return input_cost_matrix
 
 
 # main part of the code starts here
@@ -122,6 +119,8 @@ input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
 cost_matrix = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
+matrix_printer(cost_matrix)
+exit()
 aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix)
 
 
