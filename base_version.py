@@ -115,11 +115,13 @@ def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
 
 
 # main part of the code starts here
-input_file_name = "input1.txt"
+input_file_name = "input5.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
 cost_matrix = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
-matrix_printer(cost_matrix)
+print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
+print("the len of seq one: " + str(len(seq_one)))
+print("the len of seq two: " + str(len(seq_two)))
 exit()
 aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix)
 
