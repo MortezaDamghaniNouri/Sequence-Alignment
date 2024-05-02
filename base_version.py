@@ -96,6 +96,14 @@ def matrix_printer(input_matrix):
         i = i - 1
 
 
+# This function prints the input matrix
+def new_matrix_printer(input_matrix):
+    i = 0
+    while i < len(input_matrix):
+        print(input_matrix[i])
+        i += 1
+
+
 # This function calculates the optimal cost using dynamic programming
 def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
     input_seq_one_list = []
@@ -126,30 +134,36 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     output_seq_one = ""
     output_seq_two = ""
     while True:
-        print("current column: " + str(current_column))
-        print("current row: " + str(current_row))
-        print("=====================================================")
         if current_row == 0 or current_column == 0:
             break
-        if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column - 1][current_row - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
+        print("===========================================")
+        print("current column: " + str(current_column))
+        print("current row: " + str(current_row))
+        print("current alfa cost: " + str(ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]))
+        print("diagonal value: " + str(input_cost_matrix[current_column - 1][current_row - 1]))
+        print("left cell in cost matrix: " + str(input_cost_matrix[current_column - 1][current_row]))
+        print("down cell in cost matrix: " + str(input_cost_matrix[current_column][current_row - 1]))
+        print("current cost matrix: " + str(input_cost_matrix[current_column][current_row]))
+        print("current word in seq one: " + str(input_seq_one_list[current_column - 1]))
+        print("current word in seq two: " + str(input_seq_two_list[current_row - 1]))
+        print("=============================================")
+        if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
             current_column = current_column - 1
             current_row = current_row - 1
             output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
             output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
-        if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column - 1][current_row] + GAP_COST:
-            current_column = current_column - 1
-            current_row = current_row
-            output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
-            output_seq_two = output_seq_two + "_"
-        if input_cost_matrix[current_column][current_row] == input_cost_matrix[current_column][current_row - 1] + GAP_COST:
-            current_column = current_column
-            current_row = current_row - 1
-            output_seq_one = output_seq_one + "_"
-            output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+        else:
+            if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row][current_column - 1] + GAP_COST:
+                print("Here")
+                current_column = current_column - 1
+                output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+                output_seq_two = output_seq_two + "_"
+            else:
+                if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column] + GAP_COST:
+                    current_row = current_row - 1
+                    output_seq_one = output_seq_one + "_"
+                    output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
 
-        if input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column - 1][current_row - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]] and input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column - 1][current_row] + GAP_COST and input_cost_matrix[current_column][current_row] != input_cost_matrix[current_column][current_row - 1] + GAP_COST:
-            print("There is an error")
-            exit()
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
@@ -161,6 +175,12 @@ cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(co
 print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
 print("the len of seq one: " + str(len(seq_one)))
 print("the len of seq two: " + str(len(seq_two)))
+print("seq one:")
+print(seq_one)
+print("seq two:")
+print(seq_two)
+print("=====================================")
+new_matrix_printer(cost_matrix)
 aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
 print("aligned seq one: ")
 print(aligned_seq_one)
