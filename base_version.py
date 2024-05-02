@@ -134,7 +134,7 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     output_seq_one = ""
     output_seq_two = ""
     while True:
-        if current_row == 0 or current_column == 0:
+        if current_row == 0 and current_column == 0:
             break
         # print("===========================================")
         # print("current column: " + str(current_column))
@@ -155,15 +155,15 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
             current_column = current_column - 1
             current_row = current_row - 1
         else:
-            if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row][current_column - 1] + GAP_COST:
-                output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
-                output_seq_two = output_seq_two + "_"
-                current_column = current_column - 1
+            if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column] + GAP_COST:
+                output_seq_one = output_seq_one + "_"
+                output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+                current_row = current_row - 1
             else:
-                if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column] + GAP_COST:
-                    output_seq_one = output_seq_one + "_"
-                    output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
-                    current_row = current_row - 1
+                if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row][current_column - 1] + GAP_COST:
+                    output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+                    output_seq_two = output_seq_two + "_"
+                    current_column = current_column - 1
         print("=============")
         print("current output seq one: " + str(output_seq_one))
         print("current output seq two: " + str(output_seq_two))
@@ -173,7 +173,7 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
 
 
 # main part of the code starts here
-input_file_name = "input2.txt"
+input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
 cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
