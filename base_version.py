@@ -136,39 +136,44 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     while True:
         if current_row == 0 or current_column == 0:
             break
-        print("===========================================")
-        print("current column: " + str(current_column))
-        print("current row: " + str(current_row))
-        print("current alfa cost: " + str(ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]))
-        print("diagonal value: " + str(input_cost_matrix[current_column - 1][current_row - 1]))
-        print("left cell in cost matrix: " + str(input_cost_matrix[current_column - 1][current_row]))
-        print("down cell in cost matrix: " + str(input_cost_matrix[current_column][current_row - 1]))
-        print("current cost matrix: " + str(input_cost_matrix[current_column][current_row]))
-        print("current word in seq one: " + str(input_seq_one_list[current_column - 1]))
-        print("current word in seq two: " + str(input_seq_two_list[current_row - 1]))
-        print("=============================================")
+        # print("===========================================")
+        # print("current column: " + str(current_column))
+        # print("current row: " + str(current_row))
+        # print("current alfa cost: " + str(ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]))
+        # print("diagonal value: " + str(input_cost_matrix[current_column - 1][current_row - 1]))
+        # print("left cell in cost matrix: " + str(input_cost_matrix[current_column - 1][current_row]))
+        # print("down cell in cost matrix: " + str(input_cost_matrix[current_column][current_row - 1]))
+        # print("current cost matrix: " + str(input_cost_matrix[current_column][current_row]))
+        # print("current word in seq one: " + str(input_seq_one_list[current_column - 1]))
+        # print("current word in seq two: " + str(input_seq_two_list[current_row - 1]))
+        # print("=============================================")
+        print(input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1])
         if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
-            current_column = current_column - 1
-            current_row = current_row - 1
+            print("it is here")
             output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
             output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+            current_column = current_column - 1
+            current_row = current_row - 1
         else:
             if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row][current_column - 1] + GAP_COST:
-                print("Here")
-                current_column = current_column - 1
                 output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
                 output_seq_two = output_seq_two + "_"
+                current_column = current_column - 1
             else:
                 if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column] + GAP_COST:
-                    current_row = current_row - 1
                     output_seq_one = output_seq_one + "_"
                     output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+                    current_row = current_row - 1
+        print("=============")
+        print("current output seq one: " + str(output_seq_one))
+        print("current output seq two: " + str(output_seq_two))
+        print("=============")
 
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
 # main part of the code starts here
-input_file_name = "input1.txt"
+input_file_name = "input2.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
 cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
@@ -180,13 +185,13 @@ print(seq_one)
 print("seq two:")
 print(seq_two)
 print("=====================================")
-new_matrix_printer(cost_matrix)
+# new_matrix_printer(cost_matrix)
 aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
 print("aligned seq one: ")
 print(aligned_seq_one)
 print("aligned seq two: ")
 print(aligned_seq_two)
-
+print("the len of aligned seq two: " + str(len(aligned_seq_two)))
 
 
 
