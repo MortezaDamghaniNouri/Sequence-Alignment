@@ -131,16 +131,14 @@ def reverse_string(input_string):
 
 # This function gets the cost matrix and input sequences and returns the two aligned sequences
 def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list, input_index):
-    current_row = len(input_seq_two)
+    current_row = input_index
     current_column = len(input_seq_one)
     output_seq_one = ""
     output_seq_two = ""
     while True:
         if current_row == 0 and current_column == 0:
             break
-        print(input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1])
         if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
-            print("it is here")
             output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
             output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
             current_column = current_column - 1
@@ -155,10 +153,6 @@ def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two
                     output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
                     output_seq_two = output_seq_two + "_"
                     current_column = current_column - 1
-        print("=============")
-        print("current output seq one: " + str(output_seq_one))
-        print("current output seq two: " + str(output_seq_two))
-        print("=============")
 
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
