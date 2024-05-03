@@ -130,7 +130,7 @@ def reverse_string(input_string):
 
 
 # This function gets the cost matrix and input sequences and returns the two aligned sequences
-def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list):
+def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list, input_index):
     current_row = len(input_seq_two)
     current_column = len(input_seq_one)
     output_seq_one = ""
@@ -229,8 +229,8 @@ while i < len(last_column_summation):
         minimum_value_index = i
     i += 1
 
-aligned_seq_one_first_half, aligned_seq_two = aligned_seqs_generator_memory_efficient_version(seq_one_first_half_string, seq_two, first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list)
-aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version(seq_one_second_half_string, seq_two_reverse_string, second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list)
+aligned_seq_one_first_half, aligned_seq_two = aligned_seqs_generator_memory_efficient_version(seq_one_first_half_string, seq_two, first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list, minimum_value_index)
+aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version(seq_one_reverse_second_half_string, seq_two_reverse_string, second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, minimum_value_index)
 
 
 
