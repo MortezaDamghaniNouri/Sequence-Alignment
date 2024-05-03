@@ -204,8 +204,37 @@ seq_one_reverse_second_half_string = reverse_string(seq_one_second_half_string)
 seq_two_reverse_string = reverse_string(seq_two)
 second_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
 second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(second_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
-aligned_seqs_generator_memory_efficient_version()
-aligned_seqs_generator_memory_efficient_version()
+
+first_half_cost_matrix_last_column = []
+second_half_cost_matrix_last_column = []
+i = 0
+while i <= len(seq_two):
+    first_half_cost_matrix_last_column.append(first_half_cost_matrix[i][len(seq_one_first_half_string)])
+    i += 1
+i = 0
+while i <= len(seq_two_reverse_string):
+    second_half_cost_matrix_last_column.append(second_half_cost_matrix[i][len(seq_one_second_half_string)])
+    i += 1
+last_column_summation = []
+i = 0
+while i < len(first_half_cost_matrix_last_column):
+    last_column_summation.append(first_half_cost_matrix_last_column[i] + second_half_cost_matrix_last_column[i])
+    i += 1
+minimum_value = last_column_summation[0]
+minimum_value_index = 0
+i = 1
+while i < len(last_column_summation):
+    if minimum_value >= last_column_summation[i]:
+        minimum_value = last_column_summation[i]
+        minimum_value_index = i
+    i += 1
+
+aligned_seq_one_first_half, aligned_seq_two = aligned_seqs_generator_memory_efficient_version(seq_one_first_half_string, seq_two, first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list)
+aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version(seq_one_second_half_string, seq_two_reverse_string, second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list)
+
+
+
+
 
 
 
