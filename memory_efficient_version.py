@@ -130,7 +130,7 @@ def reverse_string(input_string):
 
 
 # This function gets the cost matrix and input sequences and returns the two aligned sequences
-def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list):
+def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list):
     current_row = len(input_seq_two)
     current_column = len(input_seq_one)
     output_seq_one = ""
@@ -138,17 +138,6 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     while True:
         if current_row == 0 and current_column == 0:
             break
-        # print("===========================================")
-        # print("current column: " + str(current_column))
-        # print("current row: " + str(current_row))
-        # print("current alfa cost: " + str(ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]))
-        # print("diagonal value: " + str(input_cost_matrix[current_column - 1][current_row - 1]))
-        # print("left cell in cost matrix: " + str(input_cost_matrix[current_column - 1][current_row]))
-        # print("down cell in cost matrix: " + str(input_cost_matrix[current_column][current_row - 1]))
-        # print("current cost matrix: " + str(input_cost_matrix[current_column][current_row]))
-        # print("current word in seq one: " + str(input_seq_one_list[current_column - 1]))
-        # print("current word in seq two: " + str(input_seq_two_list[current_row - 1]))
-        # print("=============================================")
         print(input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1])
         if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
             print("it is here")
@@ -210,15 +199,13 @@ while i < len(seq_one_second_half):
     i += 1
 
 first_half_cost_matrix = cost_matrix_initializer(len(seq_one_first_half_string), len(seq_two))
-first_half_cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
+first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
 seq_one_reverse_second_half_string = reverse_string(seq_one_second_half_string)
 seq_two_reverse_string = reverse_string(seq_two)
 second_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
-
-
-
-first_half_cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one_first_half_string, seq_two)
-
+second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(second_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
+aligned_seqs_generator_memory_efficient_version()
+aligned_seqs_generator_memory_efficient_version()
 
 
 
