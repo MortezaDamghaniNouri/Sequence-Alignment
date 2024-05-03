@@ -2,6 +2,8 @@
 
 
 
+
+
 GAP_COST = 30
 ALFA_DICTIONARY = {"AA": 0, "AC": 110, "AG": 48, "AT": 94,
                    "CA": 110, "CC": 0, "CG": 118, "CT": 48,
@@ -173,25 +175,84 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
 
 
 # main part of the code starts here
-input_file_name = "input2.txt"
+input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
-cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
-cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
-print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
-print("the len of seq one: " + str(len(seq_one)))
-print("the len of seq two: " + str(len(seq_two)))
-print("seq one:")
-print(seq_one)
-print("seq two:")
-print(seq_two)
-print("=====================================")
-# new_matrix_printer(cost_matrix)
-aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
-print("aligned seq one: ")
-print(aligned_seq_one)
-print("aligned seq two: ")
-print(aligned_seq_two)
-print("the len of aligned seq two: " + str(len(aligned_seq_two)))
+# cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
+# cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
+# splitting the first sequence into two parts
+seq_one_chars_list = []
+for letter in seq_one:
+    seq_one_chars_list.append(letter)
+if len(seq_one) % 2 == 0:
+    middle = len(seq_one) / 2
+else:
+    middle = int(len(seq_one) / 2)
+seq_one_first_half = []
+seq_one_second_half = []
+i = 0
+while i < middle:
+    seq_one_first_half.append(seq_one_chars_list[i])
+    i += 1
+
+i = middle
+while i < len(seq_one):
+    seq_one_second_half.append(seq_one_chars_list[i])
+    i += 1
+seq_one_first_half_string = ""
+seq_one_second_half_string = ""
+i = 0
+while i < len(seq_one_first_half):
+    seq_one_first_half_string = seq_one_first_half_string + seq_one_first_half[i]
+    i += 1
+i = 0
+while i < len(seq_one_second_half):
+    seq_one_second_half_string = seq_one_second_half_string + seq_one_second_half[i]
+    i += 1
+
+first_half_cost_matrix = cost_matrix_initializer(len(seq_one_first_half_string), len(seq_two))
+first_half_cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
+seq_one_reverse_second_half_string = reverse_string(seq_one_second_half_string)
+seq_two_reverse_string = reverse_string(seq_two)
+second_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
+
+
+
+first_half_cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one_first_half_string, seq_two)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
