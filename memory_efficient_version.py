@@ -177,7 +177,7 @@ while i < middle:
     seq_one_first_half.append(seq_one_chars_list[i])
     i += 1
 
-i = middle
+i = int(middle)
 while i < len(seq_one):
     seq_one_second_half.append(seq_one_chars_list[i])
     i += 1
@@ -199,6 +199,17 @@ seq_two_reverse_string = reverse_string(seq_two)
 second_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
 second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(second_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
 
+print("first half cost matrix: ")
+new_matrix_printer(first_half_cost_matrix)
+print("=====================")
+print("second half cost matrix: ")
+new_matrix_printer(second_half_cost_matrix)
+
+
+
+
+
+
 first_half_cost_matrix_last_column = []
 second_half_cost_matrix_last_column = []
 i = 0
@@ -212,7 +223,7 @@ while i <= len(seq_two_reverse_string):
 last_column_summation = []
 i = 0
 while i < len(first_half_cost_matrix_last_column):
-    last_column_summation.append(first_half_cost_matrix_last_column[i] + second_half_cost_matrix_last_column[i])
+    last_column_summation.append(first_half_cost_matrix_last_column[i] + second_half_cost_matrix_last_column[(len(first_half_cost_matrix_last_column) - 1) - i])
     i += 1
 minimum_value = last_column_summation[0]
 minimum_value_index = 0
@@ -228,13 +239,15 @@ aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_me
 
 
 
-
-
-
-
-
-
-
+print("Aligned seq one first half: " + aligned_seq_one_first_half)
+print("Aligned seq one second half: " + aligned_seq_one_second_half)
+print("Aligned seq one second half reverse: " + reverse_string(aligned_seq_one_second_half))
+print("===========================")
+print("Aligned seq two: " + aligned_seq_two)
+print("Aligned seq two reverse: " + aligned_seq_two_reverse)
+print("Aligned seq two reverse reverse: " + reverse_string(aligned_seq_two_reverse))
+print("The minimum value is: " + str(minimum_value))
+print("minimum value index: " + str(minimum_value_index))
 
 
 
