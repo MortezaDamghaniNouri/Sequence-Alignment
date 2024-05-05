@@ -157,6 +157,35 @@ def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
+# This function gets the cost matrix and input sequences and returns the two aligned sequences
+def aligned_seqs_generator_memory_efficient_version_reverse(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list, input_index):
+    current_row = input_index
+    current_column = len(input_seq_one)
+    output_seq_one = ""
+    output_seq_two = ""
+    while True:
+        if current_row == 0 and current_column == 0:
+            break
+        if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
+            output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+            output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+            current_column = current_column - 1
+            current_row = current_row - 1
+        else:
+            if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row][current_column - 1] + GAP_COST:
+                output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+                output_seq_two = output_seq_two + "_"
+                current_column = current_column - 1
+
+            else:
+                if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column] + GAP_COST:
+                    output_seq_one = output_seq_one + "_"
+                    output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+                    current_row = current_row - 1
+
+    return reverse_string(output_seq_one), reverse_string(output_seq_two)
+
+
 # main part of the code starts here
 input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
@@ -224,7 +253,7 @@ while i < len(last_column_summation):
     i += 1
 
 aligned_seq_one_first_half, aligned_seq_two = aligned_seqs_generator_memory_efficient_version(seq_one_first_half_string, seq_two, first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list, minimum_value_index)
-aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version(seq_one_reverse_second_half_string, seq_two_reverse_string, second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
+aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version_reverse(seq_one_reverse_second_half_string, seq_two_reverse_string, second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
 
 
 
