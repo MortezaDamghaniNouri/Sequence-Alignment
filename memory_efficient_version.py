@@ -1,4 +1,4 @@
-
+import psutil
 
 
 
@@ -98,6 +98,13 @@ def matrix_printer(input_matrix):
         i = i - 1
 
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss/1024)
+    return memory_consumed
+
+
 # This function prints the input matrix
 def new_matrix_printer(input_matrix):
     i = 0
@@ -189,8 +196,6 @@ def aligned_seqs_generator_memory_efficient_version_reverse(input_seq_one, input
 # main part of the code starts here
 input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
-# cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
-# cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
 # splitting the first sequence into two parts
 seq_one_chars_list = []
 for letter in seq_one:
@@ -277,7 +282,7 @@ print("The minimum value is: " + str(minimum_value))
 print("minimum value index: " + str(minimum_value_index))
 
 
-
+print("the consumed memory: " + str(process_memory()))
 
 
 
