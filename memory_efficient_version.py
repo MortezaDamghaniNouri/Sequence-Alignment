@@ -11,7 +11,6 @@ ALFA_DICTIONARY = {"AA": 0, "AC": 110, "AG": 48, "AT": 94,
                    "TA": 94, "TC": 48, "TG": 110, "TT": 0}
 
 
-# This function gets a string and a list of integers and returns the corresponding DNA sequence
 def sequence_generator(input_base_string, input_list_of_integers):
     current_string = input_base_string
     i = 0
@@ -35,7 +34,6 @@ def sequence_generator(input_base_string, input_list_of_integers):
     return current_string
 
 
-# This function reads the input text file and returns two sequences
 def input_file_reader(input_file_name):
     input_file = open(input_file_name, "rt")
     lines = []
@@ -69,7 +67,6 @@ def input_file_reader(input_file_name):
     return first_seq, second_seq
 
 
-# This function initializes the cost matrix
 def cost_matrix_initializer(first_dimension, second_dimension):
     output_matrix = []
     i = 0
@@ -90,7 +87,6 @@ def cost_matrix_initializer(first_dimension, second_dimension):
     return output_matrix
 
 
-# This function prints the input matrix
 def matrix_printer(input_matrix):
     i = len(input_matrix) - 1
     while i >= 0:
@@ -105,7 +101,6 @@ def process_memory():
     return memory_consumed
 
 
-# This function prints the input matrix
 def new_matrix_printer(input_matrix):
     i = 0
     while i < len(input_matrix):
@@ -113,7 +108,6 @@ def new_matrix_printer(input_matrix):
         i += 1
 
 
-# This function calculates the optimal cost using dynamic programming
 def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
     input_seq_one_list = []
     input_seq_two_list = []
@@ -131,12 +125,10 @@ def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
     return input_cost_matrix, input_seq_one_list, input_seq_two_list
 
 
-# This function reverses the input string
 def reverse_string(input_string):
     return input_string[::-1]
 
 
-# This function gets the cost matrix and input sequences and returns the two aligned sequences
 def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list, input_index):
     current_row = input_index
     current_column = len(input_seq_one)
@@ -164,7 +156,6 @@ def aligned_seqs_generator_memory_efficient_version(input_seq_one, input_seq_two
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
-# This function gets the cost matrix and input sequences and returns the two aligned sequences
 def aligned_seqs_generator_memory_efficient_version_reverse(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list, input_index):
     current_row = input_index
     current_column = len(input_seq_one)
@@ -194,7 +185,7 @@ def aligned_seqs_generator_memory_efficient_version_reverse(input_seq_one, input
 
 
 # main part of the code starts here
-input_file_name = "input1.txt"
+input_file_name = "in11.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 # splitting the first sequence into two parts
 seq_one_chars_list = []
@@ -230,18 +221,22 @@ first_half_cost_matrix = cost_matrix_initializer(len(seq_one_first_half_string),
 first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
 seq_one_reverse_second_half_string = reverse_string(seq_one_second_half_string)
 seq_two_reverse_string = reverse_string(seq_two)
-second_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
-second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(second_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
-
 first_half_cost_matrix_last_column = []
-second_half_cost_matrix_last_column = []
 i = 0
 while i <= len(seq_two):
     first_half_cost_matrix_last_column.append(first_half_cost_matrix[i][len(seq_one_first_half_string)])
     i += 1
+
+
+first_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
+first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
+
+
+second_half_cost_matrix_last_column = []
+
 i = 0
 while i <= len(seq_two_reverse_string):
-    second_half_cost_matrix_last_column.append(second_half_cost_matrix[i][len(seq_one_second_half_string)])
+    second_half_cost_matrix_last_column.append(first_half_cost_matrix[i][len(seq_one_second_half_string)])
     i += 1
 last_column_summation = []
 i = 0
@@ -257,8 +252,14 @@ while i < len(last_column_summation):
         minimum_value_index = i
     i += 1
 
+first_half_cost_matrix = cost_matrix_initializer(len(seq_one_first_half_string), len(seq_two))
+first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
 aligned_seq_one_first_half, aligned_seq_two = aligned_seqs_generator_memory_efficient_version(seq_one_first_half_string, seq_two, first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list, minimum_value_index)
-aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version_reverse(seq_one_reverse_second_half_string, seq_two_reverse_string, second_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
+
+
+first_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
+first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
+aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version_reverse(seq_one_reverse_second_half_string, seq_two_reverse_string, first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
 
 
 
