@@ -187,7 +187,7 @@ def aligned_seqs_generator_memory_efficient_version_reverse(input_seq_one, input
 
 
 # main part of the code starts here
-input_file_name = "datapoints//in10.txt"
+input_file_name = "input1.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 # splitting the first sequence into two parts
 start_time = time.time()
@@ -257,16 +257,16 @@ first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_r
 aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version_reverse(seq_one_reverse_second_half_string, seq_two_reverse_string, first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
 
 
-print("Aligned seq one first half: " + aligned_seq_one_first_half)
+# print("Aligned seq one first half: " + aligned_seq_one_first_half)
 # print("Aligned seq one second half: " + aligned_seq_one_second_half)
-print("Aligned seq one second half reverse: " + reverse_string(aligned_seq_one_second_half))
+# print("Aligned seq one second half reverse: " + reverse_string(aligned_seq_one_second_half))
 aligned_seq_one_final = aligned_seq_one_first_half + reverse_string(aligned_seq_one_second_half)
 print("aligned seq one final: " + aligned_seq_one_final)
 print("The len of aligned seq one final: " + str(len(aligned_seq_one_final)))
 print("===========================")
-print("Aligned seq two: " + aligned_seq_two)
+# print("Aligned seq two: " + aligned_seq_two)
 # print("Aligned seq two reverse: " + aligned_seq_two_reverse)
-print("Aligned seq two reverse reverse: " + reverse_string(aligned_seq_two_reverse))
+# print("Aligned seq two reverse reverse: " + reverse_string(aligned_seq_two_reverse))
 aligned_seq_two_final = aligned_seq_two + reverse_string(aligned_seq_two_reverse)
 print("aligned seq two final: " + aligned_seq_two_final)
 print("The len of aligned seq two final: " + str(len(aligned_seq_two_final)))

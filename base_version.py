@@ -162,7 +162,7 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
 
 
 # main part of the code starts here
-input_file_name = "datapoints//in5.txt"
+input_file_name = "input4.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 start_time = time.time()
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
