@@ -1,5 +1,6 @@
+import sys
+import time
 import psutil
-
 
 
 GAP_COST = 30
@@ -9,7 +10,6 @@ ALFA_DICTIONARY = {"AA": 0, "AC": 110, "AG": 48, "AT": 94,
                    "TA": 94, "TC": 48, "TG": 110, "TT": 0}
 
 
-# This function gets a string and a list of integers and returns the corresponding DNA sequence
 def sequence_generator(input_base_string, input_list_of_integers):
     current_string = input_base_string
     i = 0
@@ -33,7 +33,6 @@ def sequence_generator(input_base_string, input_list_of_integers):
     return current_string
 
 
-# This function reads the input text file and returns two sequences
 def input_file_reader(input_file_name):
     input_file = open(input_file_name, "rt")
     lines = []
@@ -67,7 +66,6 @@ def input_file_reader(input_file_name):
     return first_seq, second_seq
 
 
-# This function initializes the cost matrix
 def cost_matrix_initializer(first_dimension, second_dimension):
     output_matrix = []
     i = 0
@@ -88,7 +86,6 @@ def cost_matrix_initializer(first_dimension, second_dimension):
     return output_matrix
 
 
-# This function prints the input matrix
 def matrix_printer(input_matrix):
     i = len(input_matrix) - 1
     while i >= 0:
@@ -103,7 +100,6 @@ def process_memory():
     return memory_consumed
 
 
-# This function prints the input matrix
 def new_matrix_printer(input_matrix):
     i = 0
     while i < len(input_matrix):
@@ -111,7 +107,6 @@ def new_matrix_printer(input_matrix):
         i += 1
 
 
-# This function calculates the optimal cost using dynamic programming
 def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
     input_seq_one_list = []
     input_seq_two_list = []
@@ -129,12 +124,10 @@ def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
     return input_cost_matrix, input_seq_one_list, input_seq_two_list
 
 
-# This function reverses the input string
 def reverse_string(input_string):
     return input_string[::-1]
 
 
-# This function gets the cost matrix and input sequences and returns the two aligned sequences
 def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list):
     current_row = len(input_seq_two)
     current_column = len(input_seq_one)
@@ -143,17 +136,6 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     while True:
         if current_row == 0 and current_column == 0:
             break
-        # print("===========================================")
-        # print("current column: " + str(current_column))
-        # print("current row: " + str(current_row))
-        # print("current alfa cost: " + str(ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]))
-        # print("diagonal value: " + str(input_cost_matrix[current_column - 1][current_row - 1]))
-        # print("left cell in cost matrix: " + str(input_cost_matrix[current_column - 1][current_row]))
-        # print("down cell in cost matrix: " + str(input_cost_matrix[current_column][current_row - 1]))
-        # print("current cost matrix: " + str(input_cost_matrix[current_column][current_row]))
-        # print("current word in seq one: " + str(input_seq_one_list[current_column - 1]))
-        # print("current word in seq two: " + str(input_seq_two_list[current_row - 1]))
-        # print("=============================================")
         print(input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1])
         if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
             print("it is here")
@@ -180,8 +162,9 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
 
 
 # main part of the code starts here
-input_file_name = "in11.txt"
+input_file_name = "datapoints//in5.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
+start_time = time.time()
 cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
 cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
 print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
@@ -192,14 +175,20 @@ print(seq_one)
 print("seq two:")
 print(seq_two)
 print("=====================================")
-# new_matrix_printer(cost_matrix)
 aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
+end_time = time.time()
+time_taken = (end_time - start_time) * 1000
 print("aligned seq one: ")
 print(aligned_seq_one)
 print("aligned seq two: ")
 print(aligned_seq_two)
 print("the len of aligned seq two: " + str(len(aligned_seq_two)))
 print("the consumed memory: " + str(process_memory()))
+print("the taken_time: " + str(time_taken) + " ms")
+
+
+
+
 
 
 

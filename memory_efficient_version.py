@@ -1,7 +1,6 @@
+import sys
+import time
 import psutil
-
-
-
 
 
 GAP_COST = 30
@@ -108,7 +107,7 @@ def new_matrix_printer(input_matrix):
         i += 1
 
 
-def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
+def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two, return_chars_lists):
     input_seq_one_list = []
     input_seq_two_list = []
     for letter in input_seq_one:
@@ -122,7 +121,10 @@ def optimal_cost_calculator(input_cost_matrix, input_seq_one, input_seq_two):
             input_cost_matrix[j][i] = min(input_cost_matrix[j - 1][i] + GAP_COST, input_cost_matrix[j][i - 1] + GAP_COST, input_cost_matrix[j - 1][i - 1] + ALFA_DICTIONARY[input_seq_one_list[i - 1] + input_seq_two_list[j - 1]])
             j += 1
         i += 1
-    return input_cost_matrix, input_seq_one_list, input_seq_two_list
+    if return_chars_lists:
+        return input_cost_matrix, input_seq_one_list, input_seq_two_list
+    else:
+        return input_cost_matrix
 
 
 def reverse_string(input_string):
@@ -185,9 +187,10 @@ def aligned_seqs_generator_memory_efficient_version_reverse(input_seq_one, input
 
 
 # main part of the code starts here
-input_file_name = "in11.txt"
+input_file_name = "datapoints//in10.txt"
 seq_one, seq_two = input_file_reader(input_file_name)
 # splitting the first sequence into two parts
+start_time = time.time()
 seq_one_chars_list = []
 for letter in seq_one:
     seq_one_chars_list.append(letter)
@@ -218,7 +221,7 @@ while i < len(seq_one_second_half):
     i += 1
 
 first_half_cost_matrix = cost_matrix_initializer(len(seq_one_first_half_string), len(seq_two))
-first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
+first_half_cost_matrix = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two, False)
 seq_one_reverse_second_half_string = reverse_string(seq_one_second_half_string)
 seq_two_reverse_string = reverse_string(seq_two)
 first_half_cost_matrix_last_column = []
@@ -226,14 +229,9 @@ i = 0
 while i <= len(seq_two):
     first_half_cost_matrix_last_column.append(first_half_cost_matrix[i][len(seq_one_first_half_string)])
     i += 1
-
-
 first_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
-first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
-
-
+first_half_cost_matrix = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string, False)
 second_half_cost_matrix_last_column = []
-
 i = 0
 while i <= len(seq_two_reverse_string):
     second_half_cost_matrix_last_column.append(first_half_cost_matrix[i][len(seq_one_second_half_string)])
@@ -251,16 +249,12 @@ while i < len(last_column_summation):
         minimum_value = last_column_summation[i]
         minimum_value_index = i
     i += 1
-
 first_half_cost_matrix = cost_matrix_initializer(len(seq_one_first_half_string), len(seq_two))
-first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two)
+first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_first_half_string, seq_two, True)
 aligned_seq_one_first_half, aligned_seq_two = aligned_seqs_generator_memory_efficient_version(seq_one_first_half_string, seq_two, first_half_cost_matrix, seq_one_first_half_string_chars_list, seq_two_chars_list, minimum_value_index)
-
-
 first_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
-first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string)
+first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string, True)
 aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version_reverse(seq_one_reverse_second_half_string, seq_two_reverse_string, first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
-
 
 
 print("Aligned seq one first half: " + aligned_seq_one_first_half)
@@ -277,14 +271,15 @@ aligned_seq_two_final = aligned_seq_two + reverse_string(aligned_seq_two_reverse
 print("aligned seq two final: " + aligned_seq_two_final)
 print("The len of aligned seq two final: " + str(len(aligned_seq_two_final)))
 print("============================")
-
+end_time = time.time()
+time_taken = (end_time - start_time) * 1000
 
 print("The minimum value is: " + str(minimum_value))
 print("minimum value index: " + str(minimum_value_index))
 
 
 print("the consumed memory: " + str(process_memory()))
-
+print("the taken_time: " + str(time_taken) + " ms")
 
 
 
