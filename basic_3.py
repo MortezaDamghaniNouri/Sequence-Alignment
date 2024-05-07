@@ -96,7 +96,7 @@ def matrix_printer(input_matrix):
 def process_memory():
     process = psutil.Process()
     memory_info = process.memory_info()
-    memory_consumed = int(memory_info.rss/1024)
+    memory_consumed = int(memory_info.rss / 1024)
     return memory_consumed
 
 
@@ -161,7 +161,7 @@ def output_file_generator(output_file_path_argument, input_aligned_seq_one, inpu
     output_file.write(str(input_aligned_seq_one) + "\n")
     output_file.write(str(input_aligned_seq_two) + "\n")
     output_file.write(str(round(input_time_taken, 5)) + "\n")
-    output_file.write(str(input_consumed_memory) + "\n")
+    output_file.write(str(input_consumed_memory))
     output_file.close()
 
 
@@ -171,25 +171,25 @@ def seq_alignment_base_version(input_file_path_argument, output_file_path_argume
     start_time = time.time()
     cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
     cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
-    print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
-    print("the len of seq one: " + str(len(seq_one)))
-    print("the len of seq two: " + str(len(seq_two)))
-    print("seq one:")
-    print(seq_one)
-    print("seq two:")
-    print(seq_two)
-    print("=====================================")
+    # print("The minimum cost is: " + str(cost_matrix[len(seq_two)][len(seq_one)]))
+    # print("the len of seq one: " + str(len(seq_one)))
+    # print("the len of seq two: " + str(len(seq_two)))
+    # print("seq one:")
+    # print(seq_one)
+    # print("seq two:")
+    # print(seq_two)
+    # print("=====================================")
     aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
     end_time = time.time()
     time_taken = (end_time - start_time) * 1000
-    print("aligned seq one: ")
-    print(aligned_seq_one)
-    print("aligned seq two: ")
-    print(aligned_seq_two)
-    print("the len of aligned seq two: " + str(len(aligned_seq_two)))
+    # print("aligned seq one: ")
+    # print(aligned_seq_one)
+    # print("aligned seq two: ")
+    # print(aligned_seq_two)
+    # print("the len of aligned seq two: " + str(len(aligned_seq_two)))
     consumed_memory = process_memory()
-    print("the consumed memory: " + str(process_memory()))
-    print("the taken_time: " + str(time_taken) + " ms")
+    # print("the consumed memory: " + str(process_memory()))
+    # print("the taken_time: " + str(time_taken) + " ms")
     output_file_generator(output_file_path_argument, aligned_seq_one, aligned_seq_two, consumed_memory, time_taken, cost_matrix[len(seq_two)][len(seq_one)])
 
 
