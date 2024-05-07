@@ -155,6 +155,16 @@ def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, inpu
     return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
+def output_file_generator(output_file_path_argument, input_aligned_seq_one, input_aligned_seq_two, input_consumed_memory, input_time_taken, input_cost):
+    output_file = open(output_file_path_argument, "wt")
+    output_file.write(str(input_cost) + "\n")
+    output_file.write(str(input_aligned_seq_one) + "\n")
+    output_file.write(str(input_aligned_seq_two) + "\n")
+    output_file.write(str(round(input_time_taken, 5)) + "\n")
+    output_file.write(str(input_consumed_memory) + "\n")
+    output_file.close()
+
+
 def seq_alignment_base_version(input_file_path_argument, output_file_path_argument):
     input_file_name = input_file_path_argument
     seq_one, seq_two = input_file_reader(input_file_name)
@@ -177,8 +187,10 @@ def seq_alignment_base_version(input_file_path_argument, output_file_path_argume
     print("aligned seq two: ")
     print(aligned_seq_two)
     print("the len of aligned seq two: " + str(len(aligned_seq_two)))
+    consumed_memory = process_memory()
     print("the consumed memory: " + str(process_memory()))
     print("the taken_time: " + str(time_taken) + " ms")
+    output_file_generator(output_file_path_argument, aligned_seq_one, aligned_seq_two, consumed_memory, time_taken, cost_matrix[len(seq_two)][len(seq_one)])
 
 
 if __name__ == "__main__":
