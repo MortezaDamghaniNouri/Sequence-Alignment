@@ -96,7 +96,7 @@ def matrix_printer(input_matrix):
 def process_memory():
     process = psutil.Process()
     memory_info = process.memory_info()
-    memory_consumed = int(memory_info.rss/1024)
+    memory_consumed = int(memory_info.rss / 1024)
     return memory_consumed
 
 
@@ -265,29 +265,11 @@ def seq_alignment_efficient_version(input_file_path_argument, output_file_path_a
     first_half_cost_matrix = cost_matrix_initializer(len(seq_one_reverse_second_half_string), len(seq_two_reverse_string))
     first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list = optimal_cost_calculator(first_half_cost_matrix, seq_one_reverse_second_half_string, seq_two_reverse_string, True)
     aligned_seq_one_second_half, aligned_seq_two_reverse = aligned_seqs_generator_memory_efficient_version_reverse(seq_one_reverse_second_half_string, seq_two_reverse_string, first_half_cost_matrix, seq_one_reverse_second_half_string_chars_list, seq_two_reverse_string_chars_list, (len(first_half_cost_matrix_last_column) - 1) - minimum_value_index)
-
-    # print("Aligned seq one first half: " + aligned_seq_one_first_half)
-    # print("Aligned seq one second half: " + aligned_seq_one_second_half)
-    # print("Aligned seq one second half reverse: " + reverse_string(aligned_seq_one_second_half))
     aligned_seq_one_final = aligned_seq_one_first_half + reverse_string(aligned_seq_one_second_half)
-    # print("aligned seq one final: " + aligned_seq_one_final)
-    # print("The len of aligned seq one final: " + str(len(aligned_seq_one_final)))
-    # print("===========================")
-    # print("Aligned seq two: " + aligned_seq_two)
-    # print("Aligned seq two reverse: " + aligned_seq_two_reverse)
-    # print("Aligned seq two reverse reverse: " + reverse_string(aligned_seq_two_reverse))
     aligned_seq_two_final = aligned_seq_two + reverse_string(aligned_seq_two_reverse)
-    # print("aligned seq two final: " + aligned_seq_two_final)
-    # print("The len of aligned seq two final: " + str(len(aligned_seq_two_final)))
-    # print("============================")
     end_time = time.time()
     time_taken = (end_time - start_time) * 1000
-
-    # print("The minimum value is: " + str(minimum_value))
-    # print("minimum value index: " + str(minimum_value_index))
     consumed_memory = process_memory()
-    # print("the consumed memory: " + str(process_memory()))
-    # print("the taken_time: " + str(time_taken) + " ms")
     output_file_generator(output_file_path_argument, aligned_seq_one_final, aligned_seq_two_final, consumed_memory, time_taken, minimum_value)
 
 
