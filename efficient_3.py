@@ -332,14 +332,13 @@ def seq_alignment_new_version(first_input_string, second_input_string):
 
 
 def seq_alignment_efficient_version(input_file_path_argument, output_file_path_argument):
+    start_time = time.time()
     input_file_name = input_file_path_argument
     seq_one, seq_two = input_file_reader(input_file_name)
-    start_time = time.time()
     if len(seq_one) < len(seq_two):
         temp_seq = seq_one
         seq_one = seq_two
         seq_two = temp_seq
-
     # splitting the first sequence into two parts
     seq_one_chars_list = []
     for letter in seq_one:
@@ -391,8 +390,6 @@ def seq_alignment_efficient_version(input_file_path_argument, output_file_path_a
     output_one, output_two = seq_alignment_new_version(seq_one, seq_two)
     end_time = time.time()
     consumed_memory = process_memory()
-    print("the first aligned one: " + output_one)
-    print("the second aligned one: " + output_two)
     time_taken = (end_time - start_time) * 1000
     output_file_generator(output_file_path_argument, output_one, output_two, consumed_memory, time_taken, minimum_value)
 

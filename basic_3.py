@@ -166,9 +166,9 @@ def output_file_generator(output_file_path_argument, input_aligned_seq_one, inpu
 
 
 def seq_alignment_base_version(input_file_path_argument, output_file_path_argument):
+    start_time = time.time()
     input_file_name = input_file_path_argument
     seq_one, seq_two = input_file_reader(input_file_name)
-    start_time = time.time()
     cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
     cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two)
     aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
