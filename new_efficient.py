@@ -334,25 +334,26 @@ def seq_alignment_new_version(first_input_string, second_input_string):
 def seq_alignment_efficient_version(input_file_path_argument, output_file_path_argument):
     input_file_name = input_file_path_argument
     seq_one, seq_two = input_file_reader(input_file_name)
+    start_time = time.time()
     output_one, output_two = seq_alignment_new_version(seq_one, seq_two)
+    end_time = time.time()
+    consumed_memory = process_memory()
     print("the first aligned one: " + output_one)
     print("the second aligned one: " + output_two)
-    exit()
-    output_file_generator(output_file_path_argument, aligned_seq_one_final, aligned_seq_two_final, consumed_memory, time_taken, minimum_value)
+    time_taken = (end_time - start_time) * 1000
+    minimum_value = 0
+    output_file_generator(output_file_path_argument, output_one, output_two, consumed_memory, time_taken, minimum_value)
 
 
-# if __name__ == "__main__":
-#     if len(sys.argv) < 3 or len(sys.argv) > 3:
-#         print("Wrong input arguments format")
-#         sys.exit()
-#     else:
-#         input_file_path = sys.argv[1]
-#         output_file_path = sys.argv[2]
-#         seq_alignment_efficient_version(input_file_path, output_file_path)
+if __name__ == "__main__":
+    if len(sys.argv) < 3 or len(sys.argv) > 3:
+        print("Wrong input arguments format")
+        sys.exit()
+    else:
+        input_file_path = sys.argv[1]
+        output_file_path = sys.argv[2]
+        seq_alignment_efficient_version(input_file_path, output_file_path)
 
-input_file_path = "input1.txt"
-output_file_path = "test"
-seq_alignment_efficient_version(input_file_path, output_file_path)
 
 
 
