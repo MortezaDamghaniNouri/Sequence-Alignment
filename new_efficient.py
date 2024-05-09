@@ -221,17 +221,34 @@ def last_row_calculator(first_input_string, second_input_string):
     return second_row
 
 
+def aligned_seqs_generator(input_seq_one, input_seq_two, input_cost_matrix, input_seq_one_list, input_seq_two_list):
+    current_row = len(input_seq_two)
+    current_column = len(input_seq_one)
+    output_seq_one = ""
+    output_seq_two = ""
+    while True:
+        if current_row == 0 and current_column == 0:
+            break
+        print("the current row is: " + str(current_row))
+        print("the current column is: " + str(current_column))
 
+        if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column] + GAP_COST:
+            output_seq_one = output_seq_one + "_"
+            output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+            current_row = current_row - 1
+        else:
+            if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row][current_column - 1] + GAP_COST:
+                output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+                output_seq_two = output_seq_two + "_"
+                current_column = current_column - 1
+            else:
+                if input_cost_matrix[current_row][current_column] == input_cost_matrix[current_row - 1][current_column - 1] + ALFA_DICTIONARY[input_seq_one_list[current_column - 1] + input_seq_two_list[current_row - 1]]:
+                    output_seq_one = output_seq_one + input_seq_one_list[current_column - 1]
+                    output_seq_two = output_seq_two + input_seq_two_list[current_row - 1]
+                    current_column = current_column - 1
+                    current_row = current_row - 1
 
-
-
-
-
-
-
-
-
-
+    return reverse_string(output_seq_one), reverse_string(output_seq_two)
 
 
 def seq_alignment_new_version(first_input_string, second_input_string):
@@ -243,7 +260,19 @@ def seq_alignment_new_version(first_input_string, second_input_string):
         seq_one = second_input_string
 
     if len(seq_one) < 2 or len(seq_two) < 2:
-        pass
+        print("we are here")
+        print("seq_one: " + seq_one)
+        print("seq_two: " + seq_two)
+
+        cost_matrix = cost_matrix_initializer(len(seq_one), len(seq_two))
+
+        cost_matrix, seq_one_chars_list, seq_two_chars_list = optimal_cost_calculator(cost_matrix, seq_one, seq_two, True)
+        print("this is the cost matrix: ")
+        new_matrix_printer(cost_matrix)
+        print("================================")
+        aligned_seq_one, aligned_seq_two = aligned_seqs_generator(seq_one, seq_two, cost_matrix, seq_one_chars_list, seq_two_chars_list)
+        return aligned_seq_one, aligned_seq_two
+
     else:
         # splitting the first sequence into two parts
         seq_one_chars_list = []
@@ -287,37 +316,44 @@ def seq_alignment_new_version(first_input_string, second_input_string):
         while i < len(first_half_last_row):
             last_row_summation.append(first_half_last_row[i] + second_half_last_row[(len(first_half_last_row) - 1) - i])
             i += 1
-        print("The minimum OF THE LAST ROW LIST IS: " + str(min(last_row_summation)))
-        exit()
 
+        minimum_value = last_row_summation[0]
+        minimum_value_index = 0
+        i = 1
+        while i < len(last_row_summation):
+            if minimum_value >= last_row_summation[i]:
+                minimum_value = last_row_summation[i]
+                minimum_value_index = i
+            i += 1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        seq_two_first_final_string = ""
+        seq_two_second_final_string = ""
+        seq_two_chars_list = []
+        for letter in seq_two:
+            seq_two_chars_list.append(letter)
+        k = 0
+        while k < minimum_value_index:
+            seq_two_first_final_string = seq_two_first_final_string + seq_two_chars_list[k]
+            k += 1
+        k = minimum_value_index
+        while k < len(seq_two_chars_list):
+            seq_two_second_final_string = seq_two_second_final_string + seq_two_chars_list[k]
+            k += 1
+        seq_one_first_result, seq_two_first_result = seq_alignment_new_version(seq_one_first_half_string, seq_two_first_final_string)
+        print("This is seq_one_first_result: " + seq_one_first_result)
+        print("this is seq_two_first_result: " + seq_two_first_result)
+        seq_one_second_result, seq_two_second_result = seq_alignment_new_version(seq_one_second_half_string, seq_two_second_final_string)
+        return seq_one_first_result + seq_one_second_result, seq_two_first_result + seq_two_second_result
 
 
 
 def seq_alignment_efficient_version(input_file_path_argument, output_file_path_argument):
     input_file_name = input_file_path_argument
     seq_one, seq_two = input_file_reader(input_file_name)
-    seq_alignment_new_version(seq_one, seq_two)
+    output_one, output_two = seq_alignment_new_version(seq_one, seq_two)
+    print("the first aligned one: " + output_one)
+    print("the second aligned one: " + output_two)
+    exit()
     # splitting the first sequence into two parts
     start_time = time.time()
     seq_one_chars_list = []
@@ -404,3 +440,7 @@ def seq_alignment_efficient_version(input_file_path_argument, output_file_path_a
 input_file_path = "input5.txt"
 output_file_path = "my_output.txt"
 seq_alignment_efficient_version(input_file_path, output_file_path)
+
+
+
+
